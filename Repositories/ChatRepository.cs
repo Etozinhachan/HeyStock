@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/* using Microsoft.EntityFrameworkCore;
 using heystock.data;
 using heystock.Interfaces;
 using heystock.models;
@@ -97,4 +97,4 @@ public class ChatRepository : IChatRepository
     {
         _context.SaveChanges();
     }
-}
+} */

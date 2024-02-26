@@ -7,6 +7,7 @@ using heystock.data;
 using heystock.Identity;
 using heystock.Interfaces;
 using heystock.Repositories;
+using SignalRChat.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -40,7 +41,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IChatRepository, ChatRepository>();
+/* builder.Services.AddScoped<IChatRepository, ChatRepository>(); */
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -94,7 +95,7 @@ builder.Services.AddSwaggerGen(options =>
     });*/
 });
 
-
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -121,5 +122,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

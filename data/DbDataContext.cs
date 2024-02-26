@@ -17,31 +17,53 @@ public class DbDataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        /* modelBuilder.Entity<User>()
-            .HasMany(e => e.chats)
+        modelBuilder.Entity<User>()
+            .HasMany(e => e.vendas)
             .WithOne(e => e.user)
-            .HasForeignKey(e => e.user_id)
-            .HasPrincipalKey(e => e.id); */
+            .HasForeignKey(e => e.userId)
+            .HasPrincipalKey(e => e.id); 
 
-        modelBuilder.Entity<Chat>()
-            .HasMany(e => e.chatPrompts)
-            .WithOne(e => e.chat)
-            .HasForeignKey(e => e.conversation_id)
+        modelBuilder.Entity<Venda>()
+            .HasMany(e => e.stocks)
+            .WithOne(e => e.venda)
+            .HasForeignKey(e => e.vendaId)
             .HasPrincipalKey(e => e.id);
         
-        modelBuilder.Entity<Chat>()
-            .HasMany(e => e.userPrompts)
-            .WithOne(e => e.chat)
-            .HasForeignKey(e => e.conversation_id)
+        modelBuilder.Entity<Stock>()
+            .HasMany(e => e.produtos)
+            .WithOne(e => e.stock)
+            .HasForeignKey(e => e.stockId)
             .HasPrincipalKey(e => e.id);
 
-        modelBuilder.Entity<UserPrompt>()
+        /* modelBuilder.Entity<UserPrompt>()
             .Property(u => u.prompt_number)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedOnAdd(); 
         
         modelBuilder.Entity<ChatSucessfullResponse>()
             .Property(csr => csr.response_number)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedOnAdd(); */
+
+        modelBuilder.Entity<Distribuidor>()
+            .HasMany(e => e.produtos)
+            .WithOne(e => e.distribuidor)
+            .HasForeignKey(e => e.distribuidorId)
+            .HasPrincipalKey(e => e.id);
+
+        modelBuilder.Entity<Fornecedor>()
+            .HasMany(e => e.stocks)
+            .WithOne(e => e.fornecedor)
+            .HasForeignKey(e => e.fornecedorId)
+            .HasPrincipalKey(e => e.id);
+
+        modelBuilder.Entity<Fornecedor>()
+            .HasOne(e => e.marca)
+            .WithOne(e => e.fornecedor);
+        
+        modelBuilder.Entity<Marca>()
+            .HasMany(e => e.produtos)
+            .WithOne(e => e.marca)
+            .HasForeignKey(e => e.marcaId)
+            .HasPrincipalKey(e => e.id);
 
         base.OnModelCreating(modelBuilder); 
     }
