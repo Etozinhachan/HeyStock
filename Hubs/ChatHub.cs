@@ -1,8 +1,10 @@
 ﻿using heystock.Interfaces;
 using heystock.models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace SignalRChat.Hubs;
+
 
 public class ChatHub : Hub
 {

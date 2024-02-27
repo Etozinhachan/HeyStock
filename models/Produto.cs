@@ -6,6 +6,7 @@ public class Produto
 {
     [Key]
     public int id { get; set; }
+    public string nome { get; set; }
     public int distribuidorId { get; set; }
     public int stockId { get; set; }
     public int marcaId { get; set; }
