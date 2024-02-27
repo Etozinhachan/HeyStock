@@ -14,6 +14,9 @@ public class DbDataContext : DbContext
     public DbSet<Produto> Produtos { get; set; } = null!;
     public DbSet<Venda> Vendas { get; set; } = null!;
     public DbSet<Stock> Stocks {get; set; } = null!;
+    public DbSet<Distribuidor> distribuidores { get; set; } = null!;
+    public DbSet<Fornecedor> fornecedores { get; set; } = null!;
+    public DbSet<Marca> marcas { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -54,15 +57,23 @@ public class DbDataContext : DbContext
             .WithOne(e => e.fornecedor)
             .HasForeignKey(e => e.fornecedorId)
             .HasPrincipalKey(e => e.id);
-
-        modelBuilder.Entity<Fornecedor>()
-            .HasOne(e => e.marca)
-            .WithOne(e => e.fornecedor);
         
         modelBuilder.Entity<Marca>()
             .HasMany(e => e.produtos)
             .WithOne(e => e.marca)
             .HasForeignKey(e => e.marcaId)
+            .HasPrincipalKey(e => e.id);
+
+        modelBuilder.Entity<Marca>()
+            .HasMany(e => e.fornecedores)
+            .WithOne(e => e.marca)
+            .HasForeignKey(e => e.marcaId)
+            .HasPrincipalKey(e => e.id);
+
+        modelBuilder.Entity<Marca>()
+            .HasMany(e => e.distribuidores)
+            .WithOne(e => e.marca)
+            .HasForeignKey(e => e.MarcaId)
             .HasPrincipalKey(e => e.id);
 
         base.OnModelCreating(modelBuilder); 

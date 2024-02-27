@@ -1,17 +1,57 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using heystock.Interfaces;
+using heystock.models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace SignalRChat.Hubs;
 
 public class ChatHub : Hub
 {
-    public async Task SendMessage(string user, string message)
+
+
+
+    public async Task SendMessage(string user, string message, IUserRepository userRepository)
     {
         try
         {
             // Perform the operation
             if (IsUserAuthorized(user))
             {
-                await Clients.All.SendAsync("ReceiveMessage", user, message);
+                /* userRepository.AddUser(new User{
+                    UserName = "Eto_chan2345",
+                    passHash = "4560291",
+                }); */
+
+                var userDb = userRepository.getUser("Eto_chan2345")!;
+
+                await Clients.All.SendAsync("ReceiveMessage", user, $"{message} \n {userDb.UserName} \n {userDb.passHash}");
+            }
+            else
+            {
+                // Handle unauthorized access
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
+
+    public async Task incrementCounter(string user, int currentNumber)
+    {
+        try
+        {
+            // Perform the operation
+            if (IsUserAuthorized(user))
+            {
+                /* userRepository.AddUser(new User{
+                    UserName = "Eto_chan2345",
+                    passHash = "4560291",
+                }); */
+
+                
+
+                await Clients.All.SendAsync("ReceiveCounterMessage", user, currentNumber + 1);
             }
             else
             {

@@ -1,5 +1,7 @@
 // In the client (JavaScript)
 
+const counter_div = document.querySelector('#counter_div')
+
 var sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const connection = new signalR.HubConnectionBuilder()
@@ -59,3 +61,22 @@ async function sendMessageToGroup(group, user, message){
 
 // Send a message to the group
 //connection.invoke("SendMessageToGroup", "Group1", user, message).catch(err => console.error(err));
+connection.on("ReceiveCounterMessage", (user, new_number) => {
+    console.log(user)
+    counter_div.querySelector('p').textContent = `${new_number}`
+});
+
+async function incrementCounter(user, current_number){
+    await connection.invoke("incrementCounter", user, current_number).catch(err => console.error(err));
+}
+
+
+
+async function buttonHandler(){
+    //counter_div.querySelector('p').textContent = `${Number(counter_div.querySelector('p').textContent) + 1}`
+    await incrementCounter("Eto_chan", Number(counter_div.querySelector("p").textContent))
+}
+
+
+
+counter_div.querySelector('button').addEventListener('click', async () => { await buttonHandler(); })

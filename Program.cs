@@ -45,7 +45,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-var dbConnectionString = builder.Configuration.GetConnectionString("Default");
+var dbConnectionString = builder.Configuration.GetConnectionString("defaultDb");
 
 builder.Services.AddDbContext<DbDataContext>(opt => opt.UseMySql(
     dbConnectionString, ServerVersion.AutoDetect(dbConnectionString))); 
