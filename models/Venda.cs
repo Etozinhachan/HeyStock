@@ -8,6 +8,6 @@ public class Venda
     public int id { get; set; }
     public int userId { get; set; }
     public float custo { get; set; }
-    public ICollection<Stock> stocks { get; set; }
+    public ICollection<Produto> produtos { get; set; }    
     public User user { get; set; }
 }

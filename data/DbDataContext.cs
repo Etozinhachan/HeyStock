@@ -27,7 +27,7 @@ public class DbDataContext : DbContext
             .HasPrincipalKey(e => e.id); 
 
         modelBuilder.Entity<Venda>()
-            .HasMany(e => e.stocks)
+            .HasMany(e => e.produtos)
             .WithOne(e => e.venda)
             .HasForeignKey(e => e.vendaId)
             .HasPrincipalKey(e => e.id);

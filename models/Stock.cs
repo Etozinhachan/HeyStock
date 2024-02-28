@@ -12,6 +12,5 @@ public class Stock
     public float precoDeCompra { get; set; }
     public float IVA { get; set; }
     public ICollection<Produto> produtos { get; set; } 
-    public Venda venda { get; set; }
     public Fornecedor fornecedor { get; set; }
 }
