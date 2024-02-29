@@ -1,14 +1,14 @@
-﻿using heystock.Interfaces;
+﻿using heystock.helper;
+using heystock.Interfaces;
 using heystock.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
-namespace SignalRChat.Hubs;
+namespace heystock.hubs;
 
-
+[Authorize]
 public class ChatHub : Hub
 {
-
 
 
     public async Task SendMessage(string user, string message, IUserRepository userRepository)
@@ -23,9 +23,9 @@ public class ChatHub : Hub
                     passHash = "4560291",
                 }); */
 
-                var userDb = userRepository.getUser("Eto_chan2345")!;
+                //var userDb = userRepository.getUser("Eto_chan2345")!;
 
-                await Clients.All.SendAsync("ReceiveMessage", user, $"{message} \n {userDb.UserName} \n {userDb.passHash}");
+                await Clients.All.SendAsync("ReceiveMessage", user, /*$"{message} \n {userDb.UserName} \n {userDb.passHash}"*/message);
             }
             else
             {
@@ -82,7 +82,6 @@ public class ChatHub : Hub
         // Log the connection
         Console.WriteLine($"Client {Context.ConnectionId} connected");
     }
-
     public override async Task OnDisconnectedAsync(Exception exception)
     {
         // Log the disconnection

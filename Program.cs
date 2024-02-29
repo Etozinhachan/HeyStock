@@ -7,7 +7,7 @@ using heystock.data;
 using heystock.Identity;
 using heystock.Interfaces;
 using heystock.Repositories;
-using SignalRChat.Hubs;
+using heystock.hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -123,5 +123,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<ChatHub>("/chatHub");
+app.MapHub<LoginHub>("/loginHub");
 
 app.Run();

@@ -3,7 +3,19 @@ const jwt_token_Header = "heystock-login-jwt-token";
 const counter_div = document.querySelector('#counter_div')
 const input_section = document.querySelector('.input_section')
 const message_section = document.querySelector('.message_section')
+const dialog_opener = document.querySelector('.dialog_opener')
+const dialog = document.querySelector('.dialog')
+const register_form = document.querySelector('#register')
+const login_form = document.querySelector('#login')
 
+
+const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/chathub", { accessTokenFactory: () => this.loginToken })
+    .build();
+
+const login_connection = new signalR.HubConnectionBuilder()
+.withUrl("/loginhub", { accessTokenFactory: () => this.loginToken })
+.build();
 
 var sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -91,31 +103,39 @@ function getCurrentPath(){
     return paths
 }
 
-const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/chathub", { accessTokenFactory: () => this.loginToken })
-    .build();
 
 window.onload = async () => {
     await new Promise(r => setTimeout(r, 2000))
     console.log(`Connection: ${connection}}`)
-    await startConnection()
-    await sendMessage("Eto_chan", "rawr")
+    await startLoginConnection()
+    /*await sendMessage("Eto_chan", "rawr")
     await joinGroup("Group1")
-    await sendMessageToGroup("Group1", "Eto_chan", "rawr2")
+    await sendMessageToGroup("Group1", "Eto_chan", "rawr2") */
     console.log(getCurrentPath())
 }
 
-connection.onclose(async () => {
+/* connection.onclose(async () => {
     // Handle reconnection
     await startConnection();
-});
+}); */
 
 async function startConnection() {
     try {
         await connection.start();
+       
     } catch (err) {
         console.error(err);
         setTimeout(() => startConnection(), 5000); // Retry every 5 seconds
+    }
+}
+
+async function startLoginConnection() {
+    try {
+        await login_connection.start();
+       
+    } catch (err) {
+        console.error(err);
+        setTimeout(() => startLoginConnection(), 5000); // Retry every 5 seconds
     }
 }
 
@@ -178,11 +198,33 @@ async function buttonHandler(){
 
 async function messageButtonHandler(){
     user = input_section.querySelector('#user_input').value
-    message = input_section.querySelector('input').value
+    message = input_section.querySelector('#message_input').value
     await sendMessage(user, message)
 }
 
+login_connection.on("RegisteredMessage", (user, jwt) => {
+    console.log(user)
+    console.log(jwt)
+})
 
+async function handle_register_submit(){
+
+    console.log('rwar')
+
+    const formData = new FormData(register_form)
+
+    await login_connection.invoke('register_user', formData.get('UserName'), formData.get('passHash'))
+}
+
+async function handle_login_submit(){
+
+    const formData = FormData(login_form)
+
+
+}
 
 counter_div.querySelector('button').addEventListener('click', async () => { await buttonHandler(); });
 input_section.querySelector('button').addEventListener('click', async() => { await messageButtonHandler(); });
+dialog_opener.addEventListener('click', () => { dialog.showModal() })
+register_form.addEventListener('submit', async() => { await handle_register_submit() } )
+login_form.addEventListener('submit', async() => { await handle_login_submit() } )
