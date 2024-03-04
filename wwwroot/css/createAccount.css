@@ -20,14 +20,6 @@ body{
     align-items: center;
 }
 
-.letters{
-    color: #4d4d4d;
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .left_login{
     width: 50vw;
     height: 100vh;
@@ -37,14 +29,10 @@ body{
     flex-direction: column;
 }
 
-.left_login > h1{
-    font-size: 40px;
-    color: #77ffc0;
+.left_login_image{
+    width: 35vw;
 }
 
-.left_login_image{
-    width: 400px;
-}
 
 .rigth_login{
     width: 50vw;
@@ -55,11 +43,11 @@ body{
 }
 
 .card-login{
-    width: 50%;
+    width: 55%;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column; 
     padding: 40px;
     background: #2f2841;
     border-radius: 20px;
@@ -111,7 +99,7 @@ body{
 
 .user > label{
     color: #f0ffffde;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .user > input::placeholder{
@@ -172,6 +160,7 @@ body{
     position: absolute;
     width: 100%;
     height: 100%;
+    background: rgba(100, 100, 100, 0.75);
     left: 0;
     top: 0;
     border-radius: 10px;

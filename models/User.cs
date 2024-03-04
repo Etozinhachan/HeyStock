@@ -11,6 +11,7 @@ public class User{
     public required string passHash { get; set; }
     public string? salt { get; set; }
     public bool isAdmin { get; set; } = false;
+    
     public ICollection<Venda> vendas { get; set; }
 
 }

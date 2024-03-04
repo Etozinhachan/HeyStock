@@ -1,21 +1,8 @@
-// In the client (JavaScript)
 const jwt_token_Header = "heystock-login-jwt-token";
-const counter_div = document.querySelector('#counter_div')
-const input_section = document.querySelector('.input_section')
-const message_section = document.querySelector('.message_section')
-const dialog_opener = document.querySelector('.dialog_opener')
-const dialog = document.querySelector('.dialog')
-const register_form = document.querySelector('#register')
-const login_form = document.querySelector('#login')
-
-
-const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/chathub", { accessTokenFactory: () => this.loginToken })
-    .build();
-
-const login_connection = new signalR.HubConnectionBuilder()
-.withUrl("/loginhub", { accessTokenFactory: () => this.loginToken })
-.build();
+const login_container = document.querySelector('.card-login');
+const username_input = document.querySelector('#usuario');
+const password_input = document.querySelector('#password');
+const login_btn = document.querySelector('.btn-login');
 
 var sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -103,10 +90,14 @@ function getCurrentPath(){
     return paths
 }
 
+const login_connection = new signalR.HubConnectionBuilder()
+    .withUrl("/loginhub", { accessTokenFactory: async() => await get_token() })
+    .build();
+
 
 window.onload = async () => {
     await new Promise(r => setTimeout(r, 2000))
-    console.log(`Connection: ${connection}}`)
+    console.log(`Connection: ${login_connection}}`)
     await startLoginConnection()
     /*await sendMessage("Eto_chan", "rawr")
     await joinGroup("Group1")
@@ -114,92 +105,40 @@ window.onload = async () => {
     console.log(getCurrentPath())
 }
 
-/* connection.onclose(async () => {
-    // Handle reconnection
-    await startConnection();
-}); */
 
-async function startConnection() {
-    try {
-        await connection.start();
-       
-    } catch (err) {
-        console.error(err);
-        setTimeout(() => startConnection(), 5000); // Retry every 5 seconds
+
+
+    async function startLoginConnection() {
+        try {
+            await login_connection.start();
+           
+        } catch (err) {
+            console.error(err);
+            setTimeout(() => startLoginConnection(), 5000); // Retry every 5 seconds
+        }
     }
+
+async function get_token(){
+
 }
 
-async function startLoginConnection() {
-    try {
-        await login_connection.start();
-       
-    } catch (err) {
-        console.error(err);
-        setTimeout(() => startLoginConnection(), 5000); // Retry every 5 seconds
-    }
+async function login(e){
+    var name = document.getElementById('usuario').Value
+    var pass = document.getElementById('password').Value
+
+    console.log("Nome: " + name);
+    console.log("pass: " + pass);
 }
 
+async function handle_login_submit(){
 
+    console.log('rwar')
+/*     const username_input = document.querySelector('input#usuario')
+    const password_input = document.querySelector('input#password')
+    console.log(username_input.value)
+    console.log(password_input.value) */
 
-connection.on("ReceiveMessage", (user, message) => {
-    console.log(user)
-    console.log(message)
-    let div_class = ""
-    if (user == "Eto_chan"){
-        div_class = "user-row_1"
-    }else{
-        div_class = "user-row_2"
-    }
-    message_section.innerHTML += `<div class="${div_class}">
-    <h1>${user}</h1>
-    <p>${message}</p>
-</div>`
-    
-});
-// Send a message
-
-async function sendMessage(user, message){
-    await connection.invoke("SendMessage", user, message).catch(err => console.error(err));
-}
-
-async function joinGroup(group){
-    await connection.invoke("JoinGroup", group).catch(err => console.error(err));
-}
-
-async function sendMessageToGroup(group, user, message){
-    await connection.invoke("SendMessageToGroup", group, user, message).catch(err => console.error(err));
-}
-
-//connection.invoke("SendMessage", user, message).catch(err => console.error(err));
-
-// In the client (JavaScript)
-// Join a group
-//connection.invoke("JoinGroup", "Group1").catch(err => console.error(err));
-
-//message = "rawr2"
-
-// Send a message to the group
-//connection.invoke("SendMessageToGroup", "Group1", user, message).catch(err => console.error(err));
-connection.on("ReceiveCounterMessage", (user, new_number) => {
-    console.log(user)
-    counter_div.querySelector('p').textContent = `${new_number}`
-});
-
-async function incrementCounter(user, current_number){
-    await connection.invoke("incrementCounter", user, current_number).catch(err => console.error(err));
-}
-
-
-
-async function buttonHandler(){
-    //counter_div.querySelector('p').textContent = `${Number(counter_div.querySelector('p').textContent) + 1}`
-    await incrementCounter("Eto_chan", Number(counter_div.querySelector("p").textContent))
-}
-
-async function messageButtonHandler(){
-    user = input_section.querySelector('#user_input').value
-    message = input_section.querySelector('#message_input').value
-    await sendMessage(user, message)
+    await login_connection.invoke('register_user', username_input.value, password_input.value);
 }
 
 login_connection.on("RegisteredMessage", (user, jwt) => {
@@ -207,24 +146,5 @@ login_connection.on("RegisteredMessage", (user, jwt) => {
     console.log(jwt)
 })
 
-async function handle_register_submit(){
 
-    console.log('rwar')
-
-    const formData = new FormData(register_form)
-
-    await login_connection.invoke('register_user', formData.get('UserName'), formData.get('passHash'))
-}
-
-async function handle_login_submit(){
-
-    const formData = FormData(login_form)
-
-
-}
-
-counter_div.querySelector('button').addEventListener('click', async () => { await buttonHandler(); });
-input_section.querySelector('button').addEventListener('click', async() => { await messageButtonHandler(); });
-dialog_opener.addEventListener('click', () => { dialog.showModal() })
-register_form.addEventListener('submit', async() => { await handle_register_submit() } )
-login_form.addEventListener('submit', async() => { await handle_login_submit() } )
+login_btn.addEventListener('click', async () => { await handle_login_submit() });

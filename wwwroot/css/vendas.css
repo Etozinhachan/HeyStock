@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+
+*{
+    font-family: "Anta", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+header{
+    background-color: #00ff88;
+    padding: 20px 2%;
+    display: flex;
+    justify-content: space-between;
+}
+
+body{
+    margin: 0;
+    background: #201b2c;
+}
+
+.info-header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.info-header > a{
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;
+}
+
+.icons-header{
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+    cursor: pointer;
+}

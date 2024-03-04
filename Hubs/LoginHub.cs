@@ -9,7 +9,18 @@ namespace heystock.hubs;
 
 class LoginHub : Hub
 {
-        public async Task register_user(string username, string password, IUserRepository userRepository, IConfiguration config, DbDataContext context){
+
+    private readonly DbDataContext _context;
+    private readonly IConfiguration _configuration;
+    private readonly IUserRepository _userRepository;
+
+    public LoginHub(DbDataContext context, IConfiguration config, IUserRepository userRepository){
+        _context = context;
+        _configuration = config;
+        _userRepository = userRepository;
+    }
+
+    public async Task register_user(string username, string password){
         try
         {
             // Perform the operation
@@ -18,16 +29,19 @@ class LoginHub : Hub
 
                 (string hash, string salt) = Helper.HashPassword(password);
                 
-                userRepository.AddUser(new User{
+                Console.WriteLine(username);
+                Console.WriteLine(password);
+
+                _userRepository.AddUser(new User{
                    UserName = username,
                    passHash = hash,
                    salt = salt,
                    isAdmin = false
                 });
 
-                User user = userRepository.getUser(username)!;
+                User user = _userRepository.getUser(username)!;
 
-                var jwt = Helper.createJWT(user, config, context);
+                var jwt = Helper.createJWT(user, _configuration, _context);
 
 
                 await Clients.Client(Context.ConnectionId).SendAsync("RegisteredMessage", user, new JwtSecurityTokenHandler().WriteToken(jwt).ToString());
