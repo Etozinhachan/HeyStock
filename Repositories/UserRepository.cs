@@ -77,4 +77,9 @@ public class UserRepository : IUserRepository
     {
         _context.SaveChanges();
     }
+
+    public ICollection<User> getUsers()
+    {
+        return _context.Users.ToList();
+    }
 }

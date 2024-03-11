@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace heystock.hubs;
 
-
+[Authorize]
 public class ChatHub : Hub
 {
 

@@ -32,6 +32,24 @@ builder.Services.AddAuthentication(x =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
+
+    x.Events = new JwtBearerEvents
+      {
+          OnMessageReceived = context =>
+          {
+              var accessToken = context.Request.Query["access_token"];
+
+              // If the request is for our hub...
+              var path = context.HttpContext.Request.Path;
+              if (!string.IsNullOrEmpty(accessToken) &&
+                  (path.StartsWithSegments("/loginHub")))
+              {
+                  // Read the token out of the query string
+                  context.Token = accessToken;
+              }
+              return Task.CompletedTask;
+          }
+      };
 });
 
 builder.Services.AddAuthorization(options =>
@@ -124,5 +142,4 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<ChatHub>("/chatHub");
 app.MapHub<LoginHub>("/loginHub");
-
 app.Run();

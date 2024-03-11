@@ -3,15 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace heystock.models;
 
-public class User{
+public class SafeUser{
 
-    [Key]
-    public int id { get; set; }
+    public required int id { get; set; }
     public required string UserName { get; set; }
-    public required string passHash { get; set; }
-    public required string salt { get; set; }
     public required bool isAdmin { get; set; } = false;
     
-    public ICollection<Venda> vendas { get; set; }
+
 
 }

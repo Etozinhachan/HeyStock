@@ -1,20 +1,17 @@
+
 const login_container = document.querySelector('.card-login');
 const username_input = document.querySelector('#usuario');
 const password_input = document.querySelector('#password');
-const login_btn = document.querySelector('.btn-login');
-
+const register_btn = document.querySelector('.btn-login');
 
 let possible_to_submit = true;
+
 
 
 const login_connection = new signalR.HubConnectionBuilder()
     .withUrl("/loginhub")
     .build();
 
-
-function get_token(){
-
-}
 
 window.onload = async () => {
     await new Promise(r => setTimeout(r, 2000))
@@ -39,7 +36,7 @@ async function startLoginConnection() {
     }
 }
 
-async function login(e) {
+async function register(e) {
     var name = document.getElementById('usuario').Value
     var pass = document.getElementById('password').Value
 
@@ -59,31 +56,31 @@ async function handle_login_submit() {
         return;
     }
     if (!possible_to_submit){
-        console.log('meow :c')
+        //console.log('meow :c')
         return;
     }
+
     possible_to_submit = false;
+
     console.log('rwar')
     /*     const username_input = document.querySelector('input#usuario')
         const password_input = document.querySelector('input#password')
         console.log(username_input.value)
         console.log(password_input.value) */
 
-    const JsonString = {
-        "UserName": `${username_input.value}`,
-        "passHash": `${password_input.value}`
-    } 
-
-    const json = JSON.stringify(JsonString)
-
-    await login_connection.invoke('login_user', json);
+        const JsonString = {
+            "UserName": `${username_input.value}`,
+            "passHash": `${password_input.value}`
+        } 
+    
+        const json = JSON.stringify(JsonString)
+    
+        await login_connection.invoke('register_user', json);
 }
 
-
-
-login_connection.on("UserLogin", async (jwt) => {
+login_connection.on("UserRegistered", async (jwt) => {
     await setCookie(jwt_token_Header, jwt, { minutes: 30 })
-    console.log("meow login")
+    console.log("meow registered")
     console.log(getCookie(jwt_token_Header, true))
     //window.location.href = `${getCurrentPath()[0]}vendas.html`;
     window.location.href = `${getCurrentPath()[0]}testeLista.html`;
@@ -95,4 +92,4 @@ login_connection.on("LoginError", (error_message) => {
 });
 
 
-login_btn.addEventListener('click', async () => { await handle_login_submit() });
+register_btn.addEventListener('click', async () => { await handle_login_submit() });

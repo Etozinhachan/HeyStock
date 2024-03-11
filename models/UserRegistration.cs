@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace testingStuff.models;
 
-public class UserDTO{
+public class UserRegistration{
 
     public required string UserName { get; set; }
     public required string passHash { get; set; }

@@ -6,6 +6,7 @@ public interface IUserRepository
 {
     public void AddUser(User user);
     public User? getUser(int id);
+    public ICollection<User> getUsers();
     public User? getUser(string username);
     public bool UserExists(int id);
     public bool UserExists(string username);
