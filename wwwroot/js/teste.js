@@ -10,11 +10,11 @@ const login_form = document.querySelector('#login')
 
 
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/chathub", { accessTokenFactory: () => this.loginToken })
+    .withUrl("/hubs/chathub", { accessTokenFactory: () => this.loginToken })
     .build();
 
 const login_connection = new signalR.HubConnectionBuilder()
-.withUrl("/loginhub", { accessTokenFactory: () => this.loginToken })
+.withUrl("/hubs/loginhub", { accessTokenFactory: () => this.loginToken })
 .build();
 
 var sleep = ms => new Promise(r => setTimeout(r, ms));

@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(x =>
               // If the request is for our hub...
               var path = context.HttpContext.Request.Path;
               if (!string.IsNullOrEmpty(accessToken) &&
-                  (path.StartsWithSegments("/loginHub")))
+                  (path.StartsWithSegments("/hubs/loginHub")))
               {
                   // Read the token out of the query string
                   context.Token = accessToken;
@@ -140,6 +140,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<ChatHub>("/chatHub");
-app.MapHub<LoginHub>("/loginHub");
+app.MapHub<ChatHub>("/hubs/chatHub");
+app.MapHub<LoginHub>("/hubs/loginHub");
 app.Run();

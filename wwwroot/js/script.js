@@ -8,13 +8,8 @@ let possible_to_submit = true;
 
 
 const login_connection = new signalR.HubConnectionBuilder()
-    .withUrl("/loginhub")
+    .withUrl("/hubs/loginhub")
     .build();
-
-
-function get_token(){
-
-}
 
 window.onload = async () => {
     await new Promise(r => setTimeout(r, 2000))

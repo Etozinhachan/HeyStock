@@ -6,7 +6,7 @@ const tableBody = document.querySelector('.user-list-table-body')
     .build(); */
 
 const login_connection = new signalR.HubConnectionBuilder()
-    .withUrl("/loginhub", { accessTokenFactory: () => getCookie(jwt_token_Header, true) })
+    .withUrl("/hubs/loginhub", { accessTokenFactory: () => getCookie(jwt_token_Header, true) })
     .build();
 
 
