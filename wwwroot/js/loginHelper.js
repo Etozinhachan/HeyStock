@@ -23,7 +23,7 @@ function isAvailableNumber(keyCode){
 }
 
 function isAvailableSpecialCharacter(keyCode){
-    return (keyCode == 95 || keyCode == 35)
+    return (keyCode == 95 || keyCode == 35 || keyCode == 64 || keyCode == 46)
 }
 
 function pasteEventHandler(){

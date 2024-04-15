@@ -2,6 +2,7 @@
 const login_container = document.querySelector('.card-login');
 const username_input = document.querySelector('#usuario');
 const password_input = document.querySelector('#password');
+const email_input = document.querySelector('#email');
 const register_btn = document.querySelector('.btn-login');
 
 let possible_to_submit = true;
@@ -70,7 +71,8 @@ async function handle_login_submit() {
 
         const JsonString = {
             "UserName": `${username_input.value}`,
-            "passHash": `${password_input.value}`
+            "passHash": `${password_input.value}`,
+            "email": `${email_input.value}`
         } 
     
         const json = JSON.stringify(JsonString)

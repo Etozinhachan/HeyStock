@@ -34,6 +34,12 @@ class LoginHub : Hub
             /* if (IsUserAuthorized(username))
             { */
 
+            if (_userRepository.UserExistsByEmail(userRegistration.email))
+            {
+                await Clients.Client(Context.ConnectionId).SendAsync("LoginError", "A user with that email already exists.");
+                return;
+            }
+
             if (_userRepository.UserExists(userRegistration.UserName))
             {
                 await Clients.Client(Context.ConnectionId).SendAsync("LoginError", "A user with that username already exists.");
@@ -48,6 +54,7 @@ class LoginHub : Hub
             _userRepository.AddUser(new User
             {
                 UserName = userRegistration.UserName,
+                email = userRegistration.email,
                 passHash = hash,
                 salt = salt,
                 isAdmin = false
@@ -82,35 +89,43 @@ class LoginHub : Hub
         }
     }
 
-    public async Task login_user(string _userRegistration)
+    public async Task login_user(string _userLogin)
     {
         try
         {
             // Perform the operation
             /* if (IsUserAuthorized(username))
             { */
-            UserRegistration userRegistration = JsonConvert.DeserializeObject<UserRegistration>(_userRegistration);
-            Console.WriteLine("Jeorge");
-            if (!_userRepository.UserExists(userRegistration.UserName))
+            UserLogin userLogin = JsonConvert.DeserializeObject<UserLogin>(_userLogin);
+            User searched_user;
+            if (userLogin.usingEmail)
             {
-                Console.WriteLine("meow");
-                await Clients.Client(Context.ConnectionId).SendAsync("LoginError", "No user found with that username.");
-                return;
+                if (!_userRepository.UserExistsByEmail(userLogin.usernameOrEmail))
+                {
+                    await Clients.Client(Context.ConnectionId).SendAsync("LoginError", "No user found with that email.", "email_input", "all,");
+                    return;
+                }
+                searched_user = _userRepository.getUserByEmail(userLogin.usernameOrEmail)!;
             }
-
-            User searched_user = _userRepository.getUser(userRegistration.UserName)!;
+            else
+            {
+                if (!_userRepository.UserExists(userLogin.usernameOrEmail))
+                {
+                    await Clients.Client(Context.ConnectionId).SendAsync("LoginError", "No user found with that username.", "username_input", "all,");
+                    return;
+                }
+                searched_user = _userRepository.getUser(userLogin.usernameOrEmail)!;
+            }
 
             var salt = searched_user.salt;
 
-            string hash = Helper.HashPassword(userRegistration.passHash, salt);
+            string hash = Helper.HashPassword(userLogin.passHash, salt);
 
             if (hash != searched_user.passHash)
             {
-                Console.WriteLine("rawr");
-                await Clients.Client(Context.ConnectionId).SendAsync("LoginError", "Wrong password.");
+                await Clients.Client(Context.ConnectionId).SendAsync("LoginError", "Wrong password.", "password_input", "all,");
                 return;
             }
-            Console.WriteLine("rahhh");
             var jwt = Helper.createJWT(searched_user, _configuration, _context);
 
 
@@ -137,15 +152,26 @@ class LoginHub : Hub
     }
 
     [Authorize]
-    public async Task refresh_users(){
+    public async Task refresh_users()
+    {
         var users = _userRepository.getUsers();
         ICollection<SafeUser> safeUsers = [];
+        ICollection<SafeUserAdmin> safeUsersAdmin = [];
         foreach (var user in users)
         {
-            safeUsers.Add(new SafeUser{
+            safeUsers.Add(new SafeUser
+            {
                 id = user.id,
                 UserName = user.UserName,
                 isAdmin = user.isAdmin
+            });
+
+            safeUsersAdmin.Add(new SafeUserAdmin
+            {
+                id = user.id,
+                UserName = user.UserName,
+                email = user.email,
+                isAdmin = user.isAdmin,
             });
         }
         await Clients.Client(Context.ConnectionId).SendAsync("RefreshedUserList", safeUsers);

@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>register</title>
-    <script defer src="./js/register.js"></script>
-    <link rel="stylesheet" href="./css/style.css">
+    <title>create account</title>
+    <script defer src="./js/register.js "></script>
+    <link rel="stylesheet" href="./css/createAccount.css">
 </head>
 <body>
     <div class="main_login">
         <div class="left_login">
-            <h1>HeyStock<br>Here you can stock your products<br>Just for 99.99 dolars</h1>
-            <img src="./assets/images/stock.svg" class="left_login_image" alt="stockImg">
+            <img src="./assets/images/stockImg.svg" class="left_login_image" alt="stockImg">
         </div>
         <div class="rigth_login">
             <div class="card-login">
-                <h1>login</h1>
+                <h1>Register</h1>
                 <div class="user">
                     <label for="usuario">User</label>
                     <input type="text" id="usuario" placeholder="user" required maxlength="255" minlength="3">
@@ -24,16 +23,18 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="password" required maxlength="255" minlength="8">
                 </div>
+                <div class="user">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="email" required maxlength="255" minlength="8">
+                </div>
                 <a class="ShowPassword">Show password<input type="checkbox" id="showPassword"></a>    
-                <a class="newAccount" href="./createAccount.html">Create new account</a>
+                <a class="newAccount" href="./index.html">Login in your account</a>
                 
-                <button class="btn-login">register</button>
+                <button class="btn-login">Sign in</button>
                 
             </div>
         </div>
     </div>
-    <a class="letters">se a laranja é laranja sera que da para comer a laranja ou pintar com ela </a>
-    <a href="./menuInicial.html">tp</a>
 
     <script src="./js/default_stuff.js"></script>
     <script src="./js/loginHelper.js"></script>

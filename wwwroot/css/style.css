@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
 
+:root {
+    --error-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+}
+
 *{
     font-family: "Anta", sans-serif;
     font-weight: 400;
@@ -98,7 +104,8 @@ body{
 
 .user > input{
     width: 100%;
-    border: none;
+    /*border: none;*/
+    border: solid 2px #514869;
     border-radius: 10px;
     padding: 15px 45px;
     background: #514869;
@@ -116,6 +123,23 @@ body{
 
 .user > input::placeholder{
     color: #f0ffff95;
+}
+
+.user small {
+    color: var(--error-color);
+}
+
+
+.user input:focus {
+    outline: none;
+}
+
+.user.error input {
+    border-color: var(--error-color);
+}
+
+.user.success input {
+    border-color: var(--success-color);
 }
 
 .btn-login{

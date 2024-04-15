@@ -82,4 +82,14 @@ public class UserRepository : IUserRepository
     {
         return _context.Users.ToList();
     }
+
+    public User? getUserByEmail(string email)
+    {
+        return _context.Users.Where(u => u.email == email).FirstOrDefault();
+    }
+
+    public bool UserExistsByEmail(string email)
+    {
+        return _context.Users.Any(u => u.email == email);
+    }
 }

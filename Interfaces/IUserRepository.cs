@@ -8,8 +8,10 @@ public interface IUserRepository
     public User? getUser(int id);
     public ICollection<User> getUsers();
     public User? getUser(string username);
+    public User? getUserByEmail(string email);
     public bool UserExists(int id);
     public bool UserExists(string username);
+    public bool UserExistsByEmail(string email);
     public bool isAdmin(int user_id);
     public bool isReallyAdmin(int user_id, bool isAdminJwtValue);
     public bool hasPerm(int jwt_id, int user_id, bool isAdmin);
