@@ -58,3 +58,21 @@ td{
 th{
     color: azure;
 }
+
+dialog{
+
+    width: 50%;
+
+}
+
+dialog form{
+    display: flex;
+    flex-direction: column;
+
+}
+
+dialog form .input{
+    padding: 7px;
+    margin: 5px;
+    border-radius: 2px;
+}

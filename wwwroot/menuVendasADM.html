@@ -24,8 +24,23 @@
         <dialog>
             <p>Hello, Dialog!</p>
             <form method="dialog">
-              <button>Close</button>
-              <input type="submit" value="">
+                <div class="input_div">
+                    <label for="nome">Nome: </label>
+                    <input type="text" name="nome" id="nome" placeholder="Nome do produto" class="input">
+                </div>
+                <div class="input_div">
+                    <label for="preco">Preco: </label>
+                    <input type="number" name="preco" id="preco" class="input">
+                
+                </div>
+                <div class="input_div">
+                    <label for="validade">Validade: </label>
+                    <input type="date" name="validade" id="validade" class="input">
+                </div>
+                <select name="nome_distribuidor" id="nome_distribuidor" class="input">
+                    <option value="teste">Teste</option>
+                </select>
+                <input type="submit" value="guardar alteracoes">
             </form>
           </dialog>
 
